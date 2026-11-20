@@ -1,0 +1,10 @@
+# Keep shell scripts with LF so ./run.sh works on macOS / Linux.
+*.sh text eol=lf
+
+# Windows batch files are pure ASCII; CRLF on checkout is fine.
+*.bat text eol=crlf
+
+# Source and docs stay LF in the repository.
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf

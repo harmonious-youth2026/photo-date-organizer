@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Files this tool creates while running (do not commit)
+照片整理日志_*.txt
+照片整理报告_*.md
+整理工具_运行记录.txt
+_待处理_日期异常/
+_demo/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
