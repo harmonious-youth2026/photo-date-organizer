@@ -52,7 +52,7 @@
 - **可预演**：`--dry-run` 只打印结果，一个字节都不动，还能算出同名冲突。
 - **可审计**：逐行启动检查、逐张结果、逐条失败原因，并生成 TXT 日志 + Markdown 报告（含真实目录树）+ 隔离清单 CSV。
 - **幂等**：重复运行不会重复搬运；隔离目录在后续运行中自动排除。
-- **可验收**：自带一键演示与 **16 条自动断言**，双击 `演示测试.bat` 即可跑完并截图。
+- **可验收**：自带一键演示与 **16 条自动断言**，双击 `演示测试.bat` 即可跑完全部检查。
 
 ---
 
@@ -102,7 +102,7 @@ chmod +x run.sh
 ./run.sh /path/to/your/photos
 ```
 
-### 方式四：一键演示与自动验收（推荐先跑这个）
+### 方式四：先跑一遍演示与自动验收（可选）
 
 **双击 `演示测试.bat`**，或命令行：
 
@@ -110,7 +110,7 @@ chmod +x run.sh
 python examples/run_demo.py
 ```
 
-全程只在 `_demo/` 里造演示数据，不碰你的真实照片。详见 [测试与截图指引](#测试与截图指引推荐先跑这个)。
+全程只在 `_demo/` 里造演示数据，不碰你的真实照片。详见 [一键演示与自动验收](#一键演示与自动验收)。
 
 ### 第一次务必先预演
 
@@ -335,7 +335,7 @@ python organize_photos.py "D:\老照片" --min-year 1950 --max-year 2030 --futur
 
 ---
 
-## 测试与截图指引（推荐先跑这个）
+## 一键演示与自动验收
 
 仓库自带**一键演示 + 自动验收**，全程只在 `_demo/` 里造数据，不碰你的真实照片。
 Windows 直接双击 **`演示测试.bat`**；macOS / Linux 或命令行：
@@ -344,7 +344,7 @@ Windows 直接双击 **`演示测试.bat`**；macOS / Linux 或命令行：
 python examples/run_demo.py
 ```
 
-脚本分 8 个阶段，交互式终端下**每个阶段结束会暂停**（按回车才进入下一阶段），方便逐屏截图：
+脚本分 8 个阶段，交互式终端下**每个阶段结束会暂停**（按回车才进入下一阶段），方便逐步核对每一步的输出：
 
 | 阶段 | 内容 |
 | --- | --- |
@@ -355,21 +355,7 @@ python examples/run_demo.py
 | STAGE 4 | 正式整理，打印完整结果汇总 |
 | STAGE 5 | 整理后的目录树（只列工具生成的层级，标注每个日期的张数） |
 | STAGE 6 | 16 条自动断言，逐条 `PASS` / `FAIL` |
-| STAGE 7 | 截图与上传建议 |
-
-**建议截这 3 张图**，放进仓库的 `docs/` 目录：
-
-1. `docs/screenshot-run.png` —— **STAGE 4**：含 `>>> 一共整理了 15 张照片 <<<` 与按日期明细；
-2. `docs/screenshot-tree.png` —— **STAGE 5**：跨年分层 `2025/12/25`、`2026/01/17`、`2026/03/08`、`2026/09/*`，且看不到任何空月份；
-3. `docs/screenshot-checks.png` —— **STAGE 6**：`验收结果：16 / 16 项通过`。
-
-然后在 README 里引用：
-
-```markdown
-![运行结果](docs/screenshot-run.png)
-![目录结构](docs/screenshot-tree.png)
-![自动验收](docs/screenshot-checks.png)
-```
+| STAGE 7 | 结束与后续提示 |
 
 16 条断言覆盖：三级分层、跨年 / 跨月目录、**无照片的月份不创建**、日期目录链无空文件夹、归档 15 张、异常隔离 10 张、隔离清单 CSV、同名加后缀、非照片文件不动、报告含目录结构章节、重复运行 0 移动 / 15 已在位、`--layout flat` 单层兼容。
 
@@ -381,11 +367,9 @@ python examples/run_demo.py --no-pause > demo-output.txt
 
 完整输出原文见 [`examples/一键测试输出示例.txt`](examples/一键测试输出示例.txt)，真实报告见 [`examples/运行报告示例.md`](examples/运行报告示例.md)。
 
-> 截图小技巧：`演示测试.bat` 已把窗口设为 120×60；若仍显示不全，可在窗口标题栏右键 →「属性」调大，或用 Windows Terminal 打开。断言全部通过（退出码 `0`）之后再上传 GitHub。
-
 ---
 
-## 用真实文件夹验证（可选，推荐用于截图）
+## 用真实文件夹验证（可选）
 
 上面的一键演示用的是合成数据。如果想用**自己的真实照片**再验一遍，用 `验证联想截图.bat`（Windows 双击）或命令行：
 
@@ -399,7 +383,7 @@ python examples/verify_real_folder.py --no-pause              # 不暂停，一�
 
 > 千万不要把 `organize_photos.py` 直接指向源文件夹运行：即使是 `--dry-run` 也会在目标目录写入运行记录。要整理真实目录，请先备份，或使用 `--copy` 模式（源文件保留）。
 
-分 7 个阶段，每阶段暂停等你按回车，便于逐屏截图：
+分 7 个阶段，每阶段暂停，按回车继续：
 
 | 阶段 | 内容 |
 | --- | --- |
@@ -409,7 +393,7 @@ python examples/verify_real_folder.py --no-pause              # 不暂停，一�
 | STAGE 4 | 正式整理，打印 `>>> 一共整理了 N 张照片 <<<` 与按日期明细 |
 | STAGE 5 | 实际生成的三级目录树 + 11 条自动验收 |
 | STAGE 6 | 重复运行，确认 0 移动、N 张「已在位」 |
-| STAGE 7 | 截图与后续指引 |
+| STAGE 7 | 结束与后续提示 |
 
 11 条断言覆盖：源目录文件数与子目录均未变化、年 / 月 / 日目录数符合预期、无空日期目录、整棵树无空文件夹、照片总数一致、顶层无散落照片、隔离夹未误建、Markdown 报告含目录树章节。
 
@@ -427,9 +411,9 @@ python examples/verify_real_folder.py --no-pause              # 不暂停，一�
 *STAGE 6 —— 重复运行：0 张移动、404 张「已在位」*
 
 > **验收出现 `[FAIL] 源文件夹文件数未被改动` 怎么回事？**
-> 这不是工具动了源目录 —— 是**运行期间你往源文件夹里存了新截图**（比如一边跑一边截屏保存），导致源目录文件数在运行前后变多（实测 402 → 409）。工具只在副本上操作，源目录本身零改动；只要在验证期间**不要往源文件夹存新文件**，该项即 PASS。
+> 这不是工具动了源目录 —— 是**运行期间有新文件被保存进源文件夹**（例如一边运行一边截屏保存），导致源目录文件数在前后不一致（实测 402 → 409）。工具只在副本上操作，源目录本身零改动；只要运行期间**不要往源文件夹新增文件**，该项即 PASS。
 
-> 说明：全是 PNG 截图时只覆盖「文件时间兜底 + 年月日分层」路径；EXIF 读取、异常日期隔离、同名冲突、文件占用等边界由 `run_demo.py` 的合成数据覆盖。建议两套截图一起放进 `docs/`，README 各引用一次。
+> 说明：全是 PNG 截图时只覆盖「文件时间兜底 + 年月日分层」路径；EXIF 读取、异常日期隔离、同名冲突、文件占用等边界由 `run_demo.py` 的合成数据覆盖。
 
 ---
 
@@ -490,37 +474,18 @@ photo-date-organizer/
 ├── 验证联想截图.bat            # 用真实文件夹验证（双击；源目录只读，纯 ASCII）
 ├── run.bat                     # 整理照片用：Windows 双击 / 拖拽
 ├── run.sh                      # 整理照片用：macOS / Linux
-├── docs/                       # 你放截图的地方（见「测试与截图指引」）
+├── docs/                       # 运行截图（README 中引用）
 ├── examples/
 │   ├── make_demo_photos.py     # 生成演示数据（纯标准库构造 EXIF）
 │   ├── run_demo.py             # 一键演示 + 16 条自动验收
 │   ├── verify_real_folder.py   # 真实文件夹验证：只读源目录 + 副本 + 11 条断言
 │   ├── 运行报告示例.md          # 真实运行报告
 │   ├── 一键测试输出示例.txt     # 一键测试的完整输出
-│   ├── 真实验证输出示例.txt     # 401 张真实 PNG 截图的验证输出
+│   ├── 真实验证输出示例.txt     # 真实 PNG 截图文件夹的验证输出
 │   └── 失败说明示例.txt         # 文件被占用时的逐行报错示例
 └── legacy/
     └── 整理照片.bat            # 早期 Windows 免 Python 版本
 ```
-
----
-
-## 发布到 GitHub（首次）
-
-仓库地址已按本仓库填为 `harmonious-youth2026/photo-date-organizer`；如果你 fork 了本仓库，把下面命令里的用户名换成你自己的，然后：
-
-```bash
-git init
-git config user.name "harmonious-youth2026"      # 提交身份：本机首次用 git 必填
-git config user.email "you@example.com"         # 换成 GitHub 绑定邮箱，或 Settings -> Emails 里的 noreply 地址
-git add .
-git commit -m "Initial release: photo date organizer (ymd layout)"
-git branch -M main
-git remote add origin https://github.com/harmonious-youth2026/photo-date-organizer.git
-git push -u origin main
-```
-
-`.gitignore` 已排除 `__pycache__`、运行日志、运行报告、隔离目录和 `_demo/`，不会把临时产物提交上去；`examples/` 下的示例文件是刻意保留的。仓库建好后，建议补一个 Release，并把 3 张截图放进 `docs/`。
 
 ---
 
